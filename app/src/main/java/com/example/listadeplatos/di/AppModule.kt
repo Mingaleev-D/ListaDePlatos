@@ -3,9 +3,13 @@ package com.example.listadeplatos.di
 import com.example.listadeplatos.data.common.Constants.BASE_URL
 import com.example.listadeplatos.data.remote.ApiService
 import com.example.listadeplatos.domain.CategoriesRepository
+import com.example.listadeplatos.domain.DisherRepository
 import com.example.listadeplatos.domain.ICategoriesRepository
+import com.example.listadeplatos.domain.IDisherRepository
 import com.example.listadeplatos.domain.usecase.GetCategoriesUseCase
+import com.example.listadeplatos.domain.usecase.GetDisherUseCase
 import com.example.listadeplatos.domain.usecase.IGetCategoriesUseCase
+import com.example.listadeplatos.domain.usecase.IGetDisherUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -45,7 +49,15 @@ class AppModule {
 
       @Binds
       @Singleton
+      fun provideDisherRepository(repository: DisherRepository): IDisherRepository
+
+      @Binds
+      @Singleton
       fun provideGetCategoryUseCase(us: GetCategoriesUseCase): IGetCategoriesUseCase
+
+      @Binds
+      @Singleton
+      fun provideGetDisherUseCase(us: GetDisherUseCase): IGetDisherUseCase
 
 
    }

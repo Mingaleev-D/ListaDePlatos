@@ -1,6 +1,7 @@
 package com.example.listadeplatos.ui.screen.category
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -32,7 +33,8 @@ import com.example.listadeplatos.ui.theme.ListaDePlatosTheme
 
 @Composable
 fun CategoryScreen(
-    viewmodel: CategoryViewModel = hiltViewModel()
+    viewmodel: CategoryViewModel = hiltViewModel(),
+    onItemClick: (String) -> Unit
 ) {
 
    val listOfCategories by remember {
@@ -44,29 +46,37 @@ fun CategoryScreen(
       Spacer(modifier = Modifier.height(30.dp))
       LazyColumn() {
          items(listOfCategories) {
-            CategoryItem(category = it)
+            SingleItem(
+                title = it.strCategory,
+                imeage = it.strCategoryThumb
+            ) { strCategory ->
+               onItemClick(strCategory)
+            }
          }
       }
    }
 }
 
 @Composable
-fun CategoryItem(
-    category: Category
+fun SingleItem(
+    title: String,
+    imeage: String,
+    onClicked: (String) -> Unit
 ) {
    Card(
        modifier = Modifier
            .padding(8.dp)
-           .fillMaxWidth(),
+           .fillMaxWidth()
+           .clickable { onClicked(title) },
        elevation = 4.dp
    ) {
       Row(modifier = Modifier.padding(6.dp), verticalAlignment = Alignment.CenterVertically) {
          Image(
-             painter = rememberAsyncImagePainter(model = category.strCategoryThumb),
+             painter = rememberAsyncImagePainter(model = imeage),
              contentDescription = null,
              modifier = Modifier.size(80.dp)
          )
-         Text(text = category.strCategory, fontSize = 24.sp)
+         Text(text = title, fontSize = 24.sp)
       }
    }
 
@@ -76,6 +86,8 @@ fun CategoryItem(
 @Composable
 fun PreviewCategoryScreen() {
    ListaDePlatosTheme {
-      CategoryScreen()
+      //      CategoryScreen(){
+      //
+      //      }
    }
 }
