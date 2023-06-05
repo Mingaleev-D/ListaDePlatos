@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
-    val usecase: IGetCategoriesUseCase
+    private val usecase: IGetCategoriesUseCase
 ) : ViewModel() {
 
    private val _listOfCategory: MutableState<List<Category>> = mutableStateOf(emptyList())
