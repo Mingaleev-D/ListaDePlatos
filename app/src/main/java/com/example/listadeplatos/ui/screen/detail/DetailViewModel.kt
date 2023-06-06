@@ -6,6 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.listadeplatos.data.dto.details.MealDetails
+import com.example.listadeplatos.data.dto.details.convertToSmellerEntity
+import com.example.listadeplatos.data.local.DisherDao
 import com.example.listadeplatos.domain.usecase.IGetDetailsUseCase
 import com.example.listadeplatos.ui.screen.disher.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val usecase: IGetDetailsUseCase
+    private val usecase: IGetDetailsUseCase,
+    val dao: DisherDao
 ) : ViewModel() {
 
    private val _viewStateDetails: MutableState<MealDetails?> = mutableStateOf(null)
@@ -29,10 +32,17 @@ class DetailViewModel @Inject constructor(
       viewModelScope.launch {
          try {
             val mealDetail = usecase(id)
-            _viewStateDetails.value = mealDetail.meals[0]
+            val meal = mealDetail.meals[0]
+            _viewStateDetails.value = meal
          } catch (ex: Exception) {
             println(ex.message)
          }
+      }
+   }
+
+   fun savetoFavorites(mealDetail: MealDetails) {
+      viewModelScope.launch {
+         dao.saveMeal(mealDetail.convertToSmellerEntity())
       }
    }
 }

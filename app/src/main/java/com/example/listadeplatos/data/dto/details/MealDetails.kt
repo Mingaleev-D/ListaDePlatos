@@ -1,7 +1,23 @@
 package com.example.listadeplatos.data.dto.details
 
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+
+@Entity(tableName = "mealDetail_table")
+data class SmallEntityMeal(
+    @PrimaryKey
+    val idMeal:String,
+    val title:String
+)
+
+fun MealDetails.convertToSmellerEntity():SmallEntityMeal{
+    return SmallEntityMeal(
+        idMeal = this.idMeal,
+        title = this.strMeal
+    )
+}
 
 data class MealDetails(
     @SerializedName("dateModified")
