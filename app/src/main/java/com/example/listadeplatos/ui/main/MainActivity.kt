@@ -17,6 +17,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.listadeplatos.ui.screen.category.CategoryScreen
+import com.example.listadeplatos.ui.screen.detail.DetailsScreen
 import com.example.listadeplatos.ui.screen.disher.DisherScreen
 import com.example.listadeplatos.ui.theme.ListaDePlatosTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,9 +51,19 @@ fun DeplatosApp() {
           }
       )) {
          val catStr = remember() { it.arguments?.getString("category") }
-         DisherScreen(category = catStr)
+         DisherScreen(category = catStr) { mealId ->
+            navController.navigate(route = "detail/${mealId}")
+         }
       }
-   }
+      composable(route = "detail/{mealId}", arguments = listOf(
+          navArgument(name = "mealId") {
+             type = NavType.StringType
+          }
+      )) {
+         val detailStr = remember() { it.arguments?.getString("mealId") }
+         DetailsScreen(mealId = detailStr)
+      }
 
+   }
 }
 
