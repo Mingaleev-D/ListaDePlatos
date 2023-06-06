@@ -19,7 +19,8 @@ import com.example.listadeplatos.ui.screen.category.SingleItem
 @Composable
 fun DisherScreen(
     viewModel: DisherViewModel = hiltViewModel(),
-    category: String?
+    category: String?,
+    onClickedDish: (String) -> Unit
 ) {
 
    DisposableEffect(key1 = Unit) {
@@ -42,19 +43,19 @@ fun DisherScreen(
 
       is ViewState.Success -> {
          //Text(text = "Disher category: ${state.data}")
-         DishersList(state.data)
+         DishersList(state.data, onClickedDish)
       }
    }
 }
 
-@Composable fun DishersList(meals: List<Meal>) {
+@Composable fun DishersList(meals: List<Meal>, onClickedDish: (String) -> Unit) {
    LazyColumn() {
-      items(meals) {
+      items(meals) {item ->
          SingleItem(
-             title = it.strMeal,
-             imeage = it.strMealThumb,
+             title = item.strMeal,
+             imeage = item.strMealThumb,
              onClicked = {
-                //TODO  onclicked
+                onClickedDish(item.idMeal)
              }
          )
       }
